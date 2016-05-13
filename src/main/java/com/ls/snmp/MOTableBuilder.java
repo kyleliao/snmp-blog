@@ -1,4 +1,4 @@
-package com.jayway.snmpblogg;
+package com.ls.snmp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,25 +15,6 @@ import org.snmp4j.smi.OID;
 import org.snmp4j.smi.SMIConstants;
 import org.snmp4j.smi.Variable;
 
-
-/**
- * <p>Utility class for adding dynamic data into an {@link MOTable}</p>
- * 
- * 
- <pre><code>
- MOTableBuilder builder = new MOTableBuilder(new OID(".1.3.6.1.2.1.2.2.1"))
-	.addColumnType(SMIConstants.SYNTAX_INTEGER,MOAccessImpl.ACCESS_READ_ONLY)
-	.addColumnType(SMIConstants.SYNTAX_OCTET_STRING,MOAccessImpl.ACCESS_READ_ONLY);
-	for(MyObject o: myObjects) {	
-		builder.addRowValue(new Integer32(o.getId()))
-		.addRowValue(new OctetString(o.getName()));
-	}
-MOTable table = builder.build();
- </code><pre>
- 
- * @author johanrask
- *
- */
 public class MOTableBuilder {
 
 	private MOTableSubIndex[] subIndexes = new MOTableSubIndex[] { new MOTableSubIndex(

@@ -1,4 +1,4 @@
-package com.jayway.snmpblogg;
+package com.ls.snmp;
 
 import org.snmp4j.agent.mo.MOAccessImpl;
 import org.snmp4j.agent.mo.MOScalar;

@@ -1,13 +1,12 @@
 package com.jayway.snmpblogg;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static com.jayway.awaitility.Awaitility.await;
+import static com.jayway.awaitility.Awaitility.callTo;
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static com.jayway.awaitility.Awaitility.*;
+
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -21,7 +20,10 @@ import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
 import org.snmp4j.smi.SMIConstants;
 
-import com.jayway.awaitility.Duration;
+import com.ls.snmp.Agent;
+import com.ls.snmp.MOScalarFactory;
+import com.ls.snmp.MOTableBuilder;
+import com.ls.snmp.SimpleSnmpClient;
 
 public class SnmpAgentAndClientTest {
 	
@@ -34,7 +36,7 @@ public class SnmpAgentAndClientTest {
 	
 	@BeforeClass
 	public static void setUp() throws Exception {
-		agent = new Agent("0.0.0.0/2001");
+		agent = new Agent("0.0.0.0/161");
 		agent.start();
 		
 		// Since BaseAgent registers some mibs by default we need to unregister
@@ -80,7 +82,7 @@ public class SnmpAgentAndClientTest {
 		agent.registerManagedObject(builder.build());
 		
 		// Setup the client to use our newly started agent
-		client = new SimpleSnmpClient("udp:127.0.0.1/2001");
+		client = new SimpleSnmpClient("udp:127.0.0.1/161");
 
 	}
 	

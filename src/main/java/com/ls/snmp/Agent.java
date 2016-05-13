@@ -1,4 +1,4 @@
-package com.jayway.snmpblogg;
+package com.ls.snmp;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,9 +9,10 @@ import org.snmp4j.agent.CommandProcessor;
 import org.snmp4j.agent.DuplicateRegistrationException;
 import org.snmp4j.agent.MOGroup;
 import org.snmp4j.agent.ManagedObject;
-import org.snmp4j.agent.mo.MOTableRow;
+import org.snmp4j.agent.mo.MOAccessImpl;
 import org.snmp4j.agent.mo.snmp.RowStatus;
 import org.snmp4j.agent.mo.snmp.SnmpCommunityMIB;
+import org.snmp4j.agent.mo.snmp.SnmpCommunityMIB.SnmpCommunityEntryRow;
 import org.snmp4j.agent.mo.snmp.SnmpNotificationMIB;
 import org.snmp4j.agent.mo.snmp.SnmpTargetMIB;
 import org.snmp4j.agent.mo.snmp.StorageType;
@@ -28,20 +29,13 @@ import org.snmp4j.smi.GenericAddress;
 import org.snmp4j.smi.Integer32;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
+import org.snmp4j.smi.SMIConstants;
 import org.snmp4j.smi.Variable;
 import org.snmp4j.transport.TransportMappings;
 
-/**
- * This Agent contains mimimal functionality for running a version 2c snmp
- * agent.
- * 
- * 
- * @author johanrask
- * 
- */
+
 public class Agent extends BaseAgent {
 
-	// not needed but very useful of course
 	static {
 		LogFactory.setLogFactory(new Log4jLogFactory());
 	}
@@ -50,8 +44,6 @@ public class Agent extends BaseAgent {
 
 	public Agent(String address) throws IOException {
 
-		// These files does not exist and are not used but has to be specified
-		// Read snmp4j docs for more info
 		super(new File("conf.agent"), new File("bootCounter.agent"),
 				new CommandProcessor(
 						new OctetString(MPv3.createLocalEngineID())));
@@ -168,14 +160,29 @@ public class Agent extends BaseAgent {
 				new Integer32(StorageType.nonVolatile), // storage type
 				new Integer32(RowStatus.active) // row status
 		};
-		MOTableRow row = communityMIB.getSnmpCommunityEntry().createRow(
+		SnmpCommunityEntryRow row = communityMIB.getSnmpCommunityEntry().createRow(
 				new OctetString("public2public").toSubIndex(true), com2sec);
-		communityMIB.getSnmpCommunityEntry().addRow(row);
+		communityMIB.getSnmpCommunityEntry().addRow((SnmpCommunityEntryRow)row);
 	}
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		Agent agent = new Agent("0.0.0.0/2001");
+		Agent agent = new Agent("0.0.0.0/161");
 		agent.start();
+		agent.registerManagedObject(MOScalarFactory.createReadOnly(new OID(".1.3.6.1.4.1.99999.3.1.0"), "fuck"));
+		
+		MOTableBuilder mob = new MOTableBuilder(new OID(".1.3.6.1.4.1.99999.1.1"));
+		
+		mob.addColumnType(SMIConstants.SYNTAX_INTEGER32, MOAccessImpl.ACCESS_READ_ONLY);
+		mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
+		mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
+		mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
+		mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
+		mob.addRowValue(new Integer32(1));
+		mob.addRowValue(new OctetString("11.11.11.11"));
+		mob.addRowValue(new OctetString("11.11.11.11"));
+		mob.addRowValue(new OctetString("11.11.11.11"));
+		mob.addRowValue(new OctetString("11.11.11.11"));
+		agent.registerManagedObject(mob.build());
 		while(true) {
 			System.out.println("Agent running...");
 			Thread.sleep(5000);

@@ -1,4 +1,4 @@
-package com.jayway.snmpblogg;
+package com.ls.snmp;
 
 import java.io.IOException;
 import java.util.ArrayList;
