@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.snmp4j.agent.MOAccess;
 import org.snmp4j.agent.mo.DefaultMOMutableRow2PC;
-import org.snmp4j.agent.mo.DefaultMOTable;
 import org.snmp4j.agent.mo.MOColumn;
 import org.snmp4j.agent.mo.MOMutableTableModel;
 import org.snmp4j.agent.mo.MOTable;
@@ -21,7 +20,7 @@ public class MOTableBuilder {
 			SMIConstants.SYNTAX_INTEGER) };
 	private MOTableIndex indexDef = new MOTableIndex(subIndexes, false);
 
-	private final List<MOColumn> columns = new ArrayList<MOColumn>();
+	private final List<MOColumn<Variable>> columns = new ArrayList<MOColumn<Variable>>();
 	private final List<Variable[]> tableRows = new ArrayList<Variable[]>();
 	private int currentRow = 0;
 	private int currentCol = 0;
@@ -47,7 +46,8 @@ public class MOTableBuilder {
 	 * @param access
 	 * @return
 	 */
-	public MOTableBuilder addColumnType(int syntax, MOAccess access) {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+  public MOTableBuilder addColumnType(int syntax, MOAccess access) {
 		colTypeCnt++;
 		columns.add(new MOColumn(colTypeCnt, syntax, access));
 		return this;
@@ -67,8 +67,9 @@ public class MOTableBuilder {
 		return this;
 	}
 
-	public MOTable build() {
-		DefaultMOTable ifTable = new DefaultMOTable(tableRootOid, indexDef,
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+  public MOTable build() {
+		MyMOTable ifTable = new MyMOTable(tableRootOid, indexDef,
 				columns.toArray(new MOColumn[0]));
 		MOMutableTableModel model = (MOMutableTableModel) ifTable.getModel();
 		int i = 1;

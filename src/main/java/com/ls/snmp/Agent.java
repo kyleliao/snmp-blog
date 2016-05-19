@@ -10,6 +10,7 @@ import org.snmp4j.agent.DuplicateRegistrationException;
 import org.snmp4j.agent.MOGroup;
 import org.snmp4j.agent.ManagedObject;
 import org.snmp4j.agent.mo.MOAccessImpl;
+import org.snmp4j.agent.mo.MOTable;
 import org.snmp4j.agent.mo.snmp.RowStatus;
 import org.snmp4j.agent.mo.snmp.SnmpCommunityMIB;
 import org.snmp4j.agent.mo.snmp.SnmpCommunityMIB.SnmpCommunityEntryRow;
@@ -107,15 +108,15 @@ public class Agent extends BaseAgent {
 	/**
 	 * User based Security Model, only applicable to
 	 * SNMP v.3
-	 * 
 	 */
 	protected void addUsmUser(USM usm) {
 	}
 
-	protected void initTransportMappings() throws IOException {
+	@SuppressWarnings("unchecked")
+  protected void initTransportMappings() throws IOException {
 		transportMappings = new TransportMapping[1];
 		Address addr = GenericAddress.parse(address);
-		TransportMapping tm = TransportMappings.getInstance()
+		TransportMapping<?> tm = TransportMappings.getInstance()
 				.createTransportMapping(addr);
 		transportMappings[0] = tm;
 	}
@@ -164,25 +165,22 @@ public class Agent extends BaseAgent {
 				new OctetString("public2public").toSubIndex(true), com2sec);
 		communityMIB.getSnmpCommunityEntry().addRow((SnmpCommunityEntryRow)row);
 	}
-
+	@SuppressWarnings("rawtypes")
+  public MOTable fillData(OID oid){
+	  MOTableBuilder mob = new MOTableBuilder(oid);
+    mob.addColumnType(SMIConstants.SYNTAX_INTEGER32, MOAccessImpl.ACCESS_READ_ONLY);
+    mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
+    mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
+    mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
+    mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
+    return mob.build();
+	}
 	public static void main(String[] args) throws IOException, InterruptedException {
 		Agent agent = new Agent("0.0.0.0/161");
 		agent.start();
-		agent.registerManagedObject(MOScalarFactory.createReadOnly(new OID(".1.3.6.1.4.1.99999.3.1.0"), "fuck"));
-		
-		MOTableBuilder mob = new MOTableBuilder(new OID(".1.3.6.1.4.1.99999.1.1"));
-		
-		mob.addColumnType(SMIConstants.SYNTAX_INTEGER32, MOAccessImpl.ACCESS_READ_ONLY);
-		mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
-		mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
-		mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
-		mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
-		mob.addRowValue(new Integer32(1));
-		mob.addRowValue(new OctetString("11.11.11.11"));
-		mob.addRowValue(new OctetString("11.11.11.11"));
-		mob.addRowValue(new OctetString("11.11.11.11"));
-		mob.addRowValue(new OctetString("11.11.11.11"));
-		agent.registerManagedObject(mob.build());
+		agent.registerManagedObject(new MyMOScalar<Variable>(new OID(MyMIB.SERVER_MODE), MOAccessImpl.ACCESS_READ_ONLY, null));
+		agent.registerManagedObject(agent.fillData(new OID(".1.3.6.1.4.1.99999.1.1")));
+		agent.registerManagedObject(agent.fillData(new OID(".1.3.6.1.4.1.99999.2.1")));
 		while(true) {
 			System.out.println("Agent running...");
 			Thread.sleep(5000);

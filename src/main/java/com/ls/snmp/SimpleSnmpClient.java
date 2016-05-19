@@ -53,7 +53,7 @@ public class SimpleSnmpClient {
 	}
 
 	private void start() throws IOException {
-		TransportMapping transport = new DefaultUdpTransportMapping();
+		TransportMapping<?> transport = new DefaultUdpTransportMapping();
 		snmp = new Snmp(transport);
 		// Do not forget this line!
 		transport.listen();
@@ -109,8 +109,7 @@ public class SimpleSnmpClient {
 	public List<List<String>> getTableAsStrings(OID[] oids) {
 		TableUtils tUtils = new TableUtils(snmp, new DefaultPDUFactory());
 		
-		@SuppressWarnings("unchecked") 
-			List<TableEvent> events = tUtils.getTable(getTarget(), oids, null, null);
+		List<TableEvent> events = tUtils.getTable(getTarget(), oids, null, null);
 		
 		List<List<String>> list = new ArrayList<List<String>>();
 		for (TableEvent event : events) {

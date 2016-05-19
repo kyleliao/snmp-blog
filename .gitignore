@@ -1,0 +1,4 @@
+/target/
+/bootCounter.agent
+/conf.agent
+.settings/
