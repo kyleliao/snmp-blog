@@ -27,6 +27,10 @@ public class MyMIB {
   public static final String SERVER_MODE = ROOT_OID+".3.1.0";
   
   /*-----------------------------------------------------------------------------------*/
+  
+  public static final String ServerError = ROOT_OID + ".7.1.0";
+  
+  /*-----------------------------------------------------------------------------------*/
   public static final String AP_CLUSTER="4";
   public static final String META_CLUSTER="5";
   public static final String STORAGE_CLUSTER="6";
