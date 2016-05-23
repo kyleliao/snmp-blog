@@ -37,7 +37,7 @@ public class Agent extends BaseAgent {
 	static {
 		LogFactory.setLogFactory(new Log4jLogFactory());
 	}
-
+	private boolean isStart = true;
 	private String address;
 
 	public Agent(String address) throws IOException {
@@ -136,12 +136,14 @@ public class Agent extends BaseAgent {
 		run();
 		sendColdStartNotification();
 		MyMIB.register(this);
-		while(true) {
+		while(isStart) {
       System.out.println("Agent running...");
       Thread.sleep(5000);
     }
 	}
-	
+	public void stop(){
+	  isStart = false;
+	}
 	protected void unregisterManagedObjects() {
 		// here we should unregister those objects previously registered...
 	}
@@ -166,11 +168,28 @@ public class Agent extends BaseAgent {
 				new OctetString("public2public").toSubIndex(true), com2sec);
 		communityMIB.getSnmpCommunityEntry().addRow((SnmpCommunityEntryRow)row);
 	}
-	public void startAgent(){
-	  
-	}
 	public static void main(String[] args) throws IOException, InterruptedException {
-		Agent agent = new Agent("0.0.0.0/161");
-		agent.start();
+		final Agent agent = new Agent("0.0.0.0/161");
+		new Thread(new Runnable() {
+      
+      @Override
+      public void run() {
+        try {
+          agent.start();
+        } catch (IOException e) {
+          e.printStackTrace();
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+        
+      }
+    }).start();
+//		new Thread(new Runnable() {
+//      
+//      @Override
+//      public void run() {
+//        agent.stop();
+//      }
+//    }).start();
 	}
 }

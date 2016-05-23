@@ -29,23 +29,10 @@ public class MOTableBuilder {
 
 	private int colTypeCnt = 0;
 
-	
-	/**
-	 * Specified oid is the root oid of this table
-	 */
 	public MOTableBuilder(OID oid) {
 		this.tableRootOid = oid;
 	}
 
-	/**
-	 * Adds all column types {@link MOColumn} to this table.
-	 * Important to understand that you must add all types here before
-	 * adding any row values
-	 * 
-	 * @param syntax use {@link SMIConstants}
-	 * @param access
-	 * @return
-	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
   public MOTableBuilder addColumnType(int syntax, MOAccess access) {
 		colTypeCnt++;
