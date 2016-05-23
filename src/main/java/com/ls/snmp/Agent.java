@@ -9,8 +9,6 @@ import org.snmp4j.agent.CommandProcessor;
 import org.snmp4j.agent.DuplicateRegistrationException;
 import org.snmp4j.agent.MOGroup;
 import org.snmp4j.agent.ManagedObject;
-import org.snmp4j.agent.mo.MOAccessImpl;
-import org.snmp4j.agent.mo.MOTable;
 import org.snmp4j.agent.mo.snmp.RowStatus;
 import org.snmp4j.agent.mo.snmp.SnmpCommunityMIB;
 import org.snmp4j.agent.mo.snmp.SnmpCommunityMIB.SnmpCommunityEntryRow;
@@ -30,7 +28,6 @@ import org.snmp4j.smi.GenericAddress;
 import org.snmp4j.smi.Integer32;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
-import org.snmp4j.smi.SMIConstants;
 import org.snmp4j.smi.Variable;
 import org.snmp4j.transport.TransportMappings;
 
@@ -125,8 +122,9 @@ public class Agent extends BaseAgent {
 	 * Start method invokes some initialization methods needed to
 	 * start the agent
 	 * @throws IOException
+	 * @throws InterruptedException 
 	 */
-	public void start() throws IOException {
+	public void start() throws IOException, InterruptedException {
 
 		init();
 		// This method reads some old config from a file and causes
@@ -137,9 +135,12 @@ public class Agent extends BaseAgent {
 		finishInit();
 		run();
 		sendColdStartNotification();
+		MyMIB.register(this);
+		while(true) {
+      System.out.println("Agent running...");
+      Thread.sleep(5000);
+    }
 	}
-	
-
 	
 	protected void unregisterManagedObjects() {
 		// here we should unregister those objects previously registered...
@@ -165,25 +166,11 @@ public class Agent extends BaseAgent {
 				new OctetString("public2public").toSubIndex(true), com2sec);
 		communityMIB.getSnmpCommunityEntry().addRow((SnmpCommunityEntryRow)row);
 	}
-	@SuppressWarnings("rawtypes")
-  public MOTable fillData(OID oid){
-	  MOTableBuilder mob = new MOTableBuilder(oid);
-    mob.addColumnType(SMIConstants.SYNTAX_INTEGER32, MOAccessImpl.ACCESS_READ_ONLY);
-    mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
-    mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
-    mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
-    mob.addColumnType(SMIConstants.SYNTAX_OCTET_STRING, MOAccessImpl.ACCESS_READ_ONLY);
-    return mob.build();
+	public void startAgent(){
+	  
 	}
 	public static void main(String[] args) throws IOException, InterruptedException {
 		Agent agent = new Agent("0.0.0.0/161");
 		agent.start();
-		agent.registerManagedObject(new MyMOScalar<Variable>(new OID(MyMIB.SERVER_MODE), MOAccessImpl.ACCESS_READ_ONLY, null));
-		agent.registerManagedObject(agent.fillData(new OID(".1.3.6.1.4.1.99999.1.1")));
-		agent.registerManagedObject(agent.fillData(new OID(".1.3.6.1.4.1.99999.2.1")));
-		while(true) {
-			System.out.println("Agent running...");
-			Thread.sleep(5000);
-		}
 	}
 }
