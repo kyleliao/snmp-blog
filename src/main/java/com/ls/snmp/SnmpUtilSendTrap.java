@@ -57,9 +57,9 @@ public class SnmpUtilSendTrap {
       
       TimeTicks sysUpTime = new TimeTicks((long)(System.currentTimeMillis()/1000));
       pdu.add(new VariableBinding(SnmpConstants.sysUpTime, sysUpTime));
-
       pdu.add(new VariableBinding(SnmpConstants.snmpTrapOID, new OID(".1.3.6.1.4.1.99999.7.1")));
-      pdu.add(new VariableBinding(new OID("."+MyMIB.ServerError),new OctetString("aaaa")));  
+      pdu.add(new VariableBinding(new OID("."+MyMIB.ServerError),new OctetString("aaaa")));
+      
       pdu.setType(PDU.TRAP);  
       // 向Agent发送PDU，并接收Response  
       snmp.send(pdu, target);

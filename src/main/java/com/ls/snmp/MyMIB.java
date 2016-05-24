@@ -117,8 +117,5 @@ public class MyMIB {
   public static MyMOScalar<Variable> createMyMOScalar(String oid){
     return new MyMOScalar<Variable>(new OID(oid), MOAccessImpl.ACCESS_READ_ONLY, null);
   }
-  
-//  public static sendPdu(){
-//    
-//  }
+
 }
