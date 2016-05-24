@@ -67,7 +67,7 @@ LOONGSTORE-MIB DEFINITIONS ::= BEGIN
 ----------------------------------------------------------------
 	capacity OBJECT IDENTIFIER ::= {loongstore 2}
 	total OBJECT-TYPE
-	  SYNTAX DisplayString
+	  SYNTAX Counter64
 	  MAX-ACCESS read-only
 	  STATUS current
 	  DESCRIPTION
@@ -75,7 +75,7 @@ LOONGSTORE-MIB DEFINITIONS ::= BEGIN
 	::= {capacity 1}
 	
 	used OBJECT-TYPE
-	  SYNTAX DisplayString
+	  SYNTAX Counter64
 	  MAX-ACCESS read-only
 	  STATUS current
 	  DESCRIPTION
@@ -83,7 +83,7 @@ LOONGSTORE-MIB DEFINITIONS ::= BEGIN
 	::= {capacity 2}
 
 	free OBJECT-TYPE
-	  SYNTAX DisplayString
+	  SYNTAX Counter64
 	  MAX-ACCESS read-only
 	  STATUS current
 	  DESCRIPTION

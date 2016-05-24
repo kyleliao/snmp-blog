@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.snmp4j.agent.mo.MOAccessImpl;
 import org.snmp4j.agent.mo.MOTable;
+import org.snmp4j.smi.Counter64;
 import org.snmp4j.smi.Integer32;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
@@ -94,13 +95,13 @@ public class MyMIB {
       return new OctetString("fuck");
     }
     if(CAPACITY_FREE.equals(oid.toString())){
-      return new OctetString("100"); 
+      return new Counter64(100); 
     }
     if(CAPACITY_TOTAL.equals(oid.toString())){
-      return new OctetString("1000");
+      return new Counter64(1000);
     }
     if(CAPACITY_USED.equals(oid.toString())){
-      return new OctetString("900");
+      return new Counter64(900);
     }
     return new OctetString("undefined");
   }
