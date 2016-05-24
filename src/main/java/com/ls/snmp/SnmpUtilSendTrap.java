@@ -23,7 +23,7 @@ public class SnmpUtilSendTrap {
     
   public static void main(String[] args) {  
       try {  
-          SnmpUtilSendTrap util = new SnmpUtilSendTrap("udp:127.0.0.1/162");  
+          SnmpUtilSendTrap util = new SnmpUtilSendTrap("udp","127.0.0.1","162");  
           util.sendPDU(MyMIB.ServerError,new OctetString("ffffff"));  
       } catch (IOException e) {  
           e.printStackTrace();  
@@ -31,8 +31,8 @@ public class SnmpUtilSendTrap {
   }  
 
   @SuppressWarnings({ "rawtypes", "unchecked" })
-  public  SnmpUtilSendTrap(String attr) throws IOException {  
-      targetAddress = GenericAddress.parse(attr);  
+  public  SnmpUtilSendTrap(String protocal,String ip,String port) throws IOException {  
+      targetAddress = GenericAddress.parse(protocal.toLowerCase()+":"+ip+"/"+port);  
       TransportMapping transport = new DefaultUdpTransportMapping();  
       snmp = new Snmp(transport);  
       transport.listen();  
@@ -49,7 +49,7 @@ public class SnmpUtilSendTrap {
       target.setAddress(targetAddress);  
       target.setRetries(2);  
       target.setTimeout(1000 * 5);
-      target.setVersion(SnmpConstants.version2c);  
+      target.setVersion(SnmpConstants.version2c);
     
       PDU pdu = new PDU();
       TimeTicks sysUpTime = new TimeTicks((long)(System.currentTimeMillis()/1000));
