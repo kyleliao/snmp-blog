@@ -90,7 +90,6 @@ public class MyMIB {
   }
   
   public static Variable getValue(OID oid){
-    System.out.println(oid.toString());
     if(SERVER_MODE.equals(oid.toString())){
       return new OctetString("fuck");
     }
