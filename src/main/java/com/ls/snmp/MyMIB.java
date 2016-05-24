@@ -28,7 +28,7 @@ public class MyMIB {
   
   /*-----------------------------------------------------------------------------------*/
   
-  public static final String ServerError = ROOT_OID + ".7.1.0";
+  public static final String ServerError = ROOT_OID + ".7.1";
   
   /*-----------------------------------------------------------------------------------*/
   public static final String AP_CLUSTER="4";
@@ -69,7 +69,6 @@ public class MyMIB {
   
   @SuppressWarnings("rawtypes")
   public static void fillData(MyMOTable table){
-    System.out.println(table.getOID());
     if(MyMIB.HOST_TABLE_ROOT_ID.equals(table.getOID().toString())){      
       table.addRowValue(new Integer32(new Random().nextInt(100)));
       table.addRowValue(new OctetString("a"));
@@ -103,7 +102,7 @@ public class MyMIB {
     if(CAPACITY_USED.equals(oid.toString())){
       return new OctetString("900");
     }
-    return new OctetString("shit");
+    return new OctetString("undefined");
   }
   
   public static void register(Agent agent){
@@ -111,11 +110,26 @@ public class MyMIB {
     agent.registerManagedObject(createMyMOScalar(CAPACITY_FREE));
     agent.registerManagedObject(createMyMOScalar(CAPACITY_TOTAL));
     agent.registerManagedObject(createMyMOScalar(CAPACITY_USED));
+    registerCustom(agent);
     agent.registerManagedObject(defineHostTable());
   }
   
   public static MyMOScalar<Variable> createMyMOScalar(String oid){
     return new MyMOScalar<Variable>(new OID(oid), MOAccessImpl.ACCESS_READ_ONLY, null);
   }
-
+  
+  public static void registerCustom(Agent agent){
+    String[] date = new String[]{MINUTE,HOUR,DAY,WEEK,MONTH,YEAR};
+    String[] aptype = new String[]{FILE_READANDWRITE,FILE_READ,FILE_WRITE,FILE_CREATEANDDELETE,DIR_CTEATEANDDELETE,FILE_QUEYR};
+    String[] meta_storage_type = new String[]{NETWORK_IO,NETWORK_INPUT,NETWORK_OUTPUT,LOAD,CPU};
+    for(int i=0;i<date.length;i++){
+      for(int j=0;j<aptype.length;j++){
+        agent.registerManagedObject(createMyMOScalar(ROOT_OID+"."+AP_CLUSTER+"."+date[i]+"."+aptype[j]+".0"));
+      }
+      for(int j=0;j<meta_storage_type.length;j++){
+        agent.registerManagedObject(createMyMOScalar(ROOT_OID+"."+META_CLUSTER+"."+date[i]+"."+meta_storage_type[j]+".0"));
+        agent.registerManagedObject(createMyMOScalar(ROOT_OID+"."+STORAGE_CLUSTER+"."+date[i]+"."+meta_storage_type[j]+".0"));
+      }
+    }
+  }
 }
