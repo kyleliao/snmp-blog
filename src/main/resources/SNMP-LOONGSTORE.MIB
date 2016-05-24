@@ -1,0 +1,824 @@
+--------------------------------------------------
+LOONGSTORE-MIB DEFINITIONS ::= BEGIN
+	IMPORTS
+		enterprises FROM RFC1155-SMI
+		Integer32 FROM SNMPv2-SMI
+		DisplayString FROM SNMPv2-TC;
+	loongstore OBJECT IDENTIFIER ::= {enterprises 99999}
+-----------------------------------------------------------	
+	hostTable OBJECT-TYPE
+	  SYNTAX SEQUENCE OF HostEntry
+          MAX-ACCESS not-accessible
+	  STATUS current
+	  DESCRIPTION "LOONGSTORES"
+	::= {loongstore 1}
+	
+	hostEntry OBJECT-TYPE
+	  SYNTAX HostEntry
+	  MAX-ACCESS not-accessible
+	  STATUS current
+	  DESCRIPTION "host"
+	  INDEX {hostIndex}
+	::= {hostTable 1}
+	
+	HostEntry ::= SEQUENCE{
+	  hostIndex Integer32,
+	  hostIp DisplayString,
+	  hostType DisplayString,
+	  hostStatus DisplayString,
+	  hostCpuUtilization DisplayString
+	}
+	
+	hostIndex OBJECT-TYPE
+	  SYNTAX Integer32
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION "HOSTINDEX"
+	::= {hostEntry 1}
+	
+	hostIp OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION "HOSTINDEX"
+	::= {hostEntry 2}
+
+	hostType OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION "HOSTINDEX"
+	::= {hostEntry 3}
+
+	hostStatus OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION "HOSTINDEX"
+	::= {hostEntry 4}
+
+	hostCpuUtilization OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION "HOSTINDEX"
+	::= {hostEntry 5}
+
+----------------------------------------------------------------
+	capacity OBJECT IDENTIFIER ::= {loongstore 2}
+	total OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION
+		"DISK"
+	::= {capacity 1}
+	
+	used OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION
+		"DISK"
+	::= {capacity 2}
+
+	free OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION
+		"DISK"
+	::= {capacity 3}
+----------------------------------------------------------------
+	server OBJECT IDENTIFIER ::= {loongstore 3}
+	mode OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {server 1}		
+----------------------------------------------------------------	
+	applicationCluster OBJECT IDENTIFIER ::= {loongstore 4}
+	apLastTenMinutes OBJECT IDENTIFIER ::= {applicationCluster 1}
+	
+	apminFileReadAndWrite OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastTenMinutes 1}
+
+	apminFileRead OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastTenMinutes 2}
+
+	apminFileWrite OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastTenMinutes 3}	 	
+
+	apminFileCreateAndDelate OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastTenMinutes 4}
+
+	apminDirCreateAndDelate OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastTenMinutes 5}
+
+	apminFileQuery OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastTenMinutes 6}
+--------------------------------------------------------------------------------------------
+	apLastHour OBJECT IDENTIFIER ::= {applicationCluster 2}
+	
+	aphourFileReadAndWrite OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastHour 1}
+	
+	aphourFileRead OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastHour 2}
+
+	aphourFileWrite OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastHour 3}
+
+	aphourFileCreateAndDelate OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastHour 4}
+
+	aphourDirCreateAndDelate OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastHour 5}
+
+	aphourFileQuery OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastHour 6}
+---------------------------------------------------------------------------------
+	apLastDay OBJECT IDENTIFIER ::= {applicationCluster 3}
+	apdayFileReadAndWrite OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastDay 1}
+	
+	apdayFileRead OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastDay 2}
+
+	apdayFileWrite OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastDay 3}
+
+	apdayFileCreateAndDelate OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastDay 4}
+
+	apdayDirCreateAndDelate OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastDay 5}
+
+	apdayFileQuery OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastDay 6}
+---------------------------------------------------------------------------------
+	apLastWeek OBJECT IDENTIFIER ::= {applicationCluster 4}
+	apweekFileReadAndWrite OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastWeek 1}
+	
+	apweekFileRead OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastWeek 2}
+
+	apweekFileWrite OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastWeek 3}
+
+	apweekFileCreateAndDelate OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastWeek 4}
+
+	apweekDirCreateAndDelate OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastWeek 5}
+
+	apweekFileQuery OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastWeek 6}
+---------------------------------------------------------------------------------
+	apLastMonth OBJECT IDENTIFIER ::= {applicationCluster 5}
+	apmonFileReadAndWrite OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastMonth 1}
+	
+	apmonFileRead OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastMonth 2}
+
+	apmonFileWrite OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastMonth 3}
+
+	apmonFileCreateAndDelate OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastMonth 4}
+
+	apmonDirCreateAndDelate OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastMonth 5}
+
+	apmonFileQuery OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastMonth 6}
+---------------------------------------------------------------------------------
+	apLastYear OBJECT IDENTIFIER ::= {applicationCluster 6}
+	apyearFileReadAndWrite OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastYear 1}
+	
+	apyearFileRead OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastYear 2}
+
+	apyearFileWrite OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastYear 3}
+
+	apyearFileCreateAndDelate OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastYear 4}
+
+	apyearDirCreateAndDelate OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastYear 5}
+
+	apyearFileQuery OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {apLastYear 6}
+----------------------------------------------------------------
+	metaCluster OBJECT IDENTIFIER ::= {loongstore 5}
+	metaLastTenMinutes OBJECT IDENTIFIER ::= {metaCluster 1}
+	
+	metaminNetWorkIO OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastTenMinutes 1}
+	
+	metaminNetWorkInput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastTenMinutes 2}
+
+	metaminNetWorkOutput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastTenMinutes 3}
+
+	metaminLoad OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastTenMinutes 4}
+
+	metaminCpu OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastTenMinutes 5}
+	
+-------------------------------------------------------------------
+	metaLastHour OBJECT IDENTIFIER ::= {metaCluster 2}
+	metahourNetWorkIO OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastHour 1}
+	
+	metahourNetWorkInput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastHour 2}
+
+	metahourNetWorkOutput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastHour 3}
+
+	metahourLoad OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastHour 4}
+
+	metahourCpu OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastHour 5}
+-------------------------------------------------------------------
+	metaLastDay OBJECT IDENTIFIER ::= {metaCluster 3}
+	metadayNetWorkIO OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastDay 1}
+	
+	metadayNetWorkInput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastDay 2}
+
+	metadayNetWorkOutput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastDay 3}
+
+	metadayLoad OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastDay 4}
+
+	metadayCpu OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastDay 5}
+-------------------------------------------------------------------
+	metaLastWeek OBJECT IDENTIFIER ::= {metaCluster 4}
+	metaweekNetWorkIO OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastWeek 1}
+	
+	metaweekNetWorkInput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastWeek 2}
+
+	metaweekNetWorkOutput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastWeek 3}
+
+	metaweekLoad OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastWeek 4}
+
+	metaweekCpu OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastWeek 5}
+-------------------------------------------------------------------
+	metaLastMonth OBJECT IDENTIFIER ::= {metaCluster 5}
+	metamonNetWorkIO OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastMonth 1}
+	
+	metamonNetWorkInput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastMonth 2}
+
+	metamonNetWorkOutput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastMonth 3}
+
+	metamonLoad OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastMonth 4}
+
+	metamonCpu OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastMonth 5}
+-------------------------------------------------------------------
+	metaLastYear OBJECT IDENTIFIER ::= {metaCluster 6}
+	metayearNetWorkIO OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastYear 1}
+	
+	metayearNetWorkInput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastYear 2}
+
+	metayearNetWorkOutput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastYear 3}
+
+	metayearLoad OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastYear 4}
+
+	metayearCpu OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {metaLastYear 5}
+
+----------------------------------------------------------------
+	storageCluster OBJECT IDENTIFIER ::= {loongstore 6}
+	stLastTenMinutes OBJECT IDENTIFIER ::= {storageCluster 1}
+
+	stminNetWorkIO OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastTenMinutes 1}
+	
+	stminNetWorkInput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastTenMinutes 2}
+
+	stminNetWorkOutput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastTenMinutes 3}
+
+	stminLoad OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastTenMinutes 4}
+
+	stminCpu OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastTenMinutes 5}
+-----------------------------------------------------------------
+	stLastHour OBJECT IDENTIFIER ::= {storageCluster 2}
+
+	sthourNetWorkIO OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastHour 1}
+	
+	sthourNetWorkInput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastHour 2}
+
+	sthourNetWorkOutput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastHour 3}
+
+	sthourLoad OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastHour 4}
+
+	sthourCpu OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastHour 5}
+-----------------------------------------------------------------
+	stLastDay OBJECT IDENTIFIER ::= {storageCluster 3}
+
+	stdayNetWorkIO OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastDay 1}
+	
+	stdayNetWorkInput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastDay 2}
+
+	stdayNetWorkOutput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastDay 3}
+
+	stdayLoad OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastDay 4}
+
+	stdayCpu OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastDay 5}
+-----------------------------------------------------------------
+	stLastWeek OBJECT IDENTIFIER ::= {storageCluster 4}
+
+	stweekNetWorkIO OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastWeek 1}
+	
+	stweekNetWorkInput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastWeek 2}
+
+	stweekNetWorkOutput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastWeek 3}
+
+	stweekLoad OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastWeek 4}
+
+	stweekCpu OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastWeek 5}
+------------------------------------------------------------------
+	stLastMonth OBJECT IDENTIFIER ::= {storageCluster 5}
+
+	stmonNetWorkIO OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastMonth 1}
+	
+	stmonNetWorkInput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastMonth 2}
+
+	stmonNetWorkOutput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastMonth 3}
+
+	stmonLoad OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastMonth 4}
+
+	stmonCpu OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastMonth 5}
+------------------------------------------------------------------
+	stLastYear OBJECT IDENTIFIER ::= {storageCluster 6}
+
+	stayearNetWorkIO OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastYear 1}
+	
+	stayearNetWorkInput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastYear 2}
+
+	stayearNetWorkOutput OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastYear 3}
+
+	stayearLoad OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastYear 4}
+
+	stayearCpu OBJECT-TYPE
+	  SYNTAX DisplayString
+	  MAX-ACCESS read-only
+	  STATUS current
+	  DESCRIPTION ""
+	::= {stLastYear 5}
+-----------------------------------------------------------------
+	alarm OBJECT IDENTIFIER ::= {loongstore 7}
+
+	serverError NOTIFICATION-TYPE
+          OBJECTS {mode}
+	  STATUS current
+          DESCRIPTION "Just a test notification"
+        ::= {alarm 1}
+	
+	diskError NOTIFICATION-TYPE
+          OBJECTS {mode}
+	  STATUS current
+          DESCRIPTION "Just a test notification"
+        ::= {alarm 2}
+	
+	nicCardError NOTIFICATION-TYPE
+          OBJECTS {mode}
+	  STATUS current
+          DESCRIPTION "Just a test notification"
+        ::= {alarm 3}
+END
